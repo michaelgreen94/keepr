@@ -25,11 +25,11 @@ namespace keepr.Controllers
       return _repo.GetAll();
     }
 
-    // [HttpGet("{id}")]
-    // public Burger GetBurgerByID([FromRoute] int id)
-    // {
-
-    // }
+    [HttpGet("{id}")]
+    public Vault GetVaultByID([FromRoute] int id)
+    {
+      return _repo.GetByID(id);
+    }
 
     [Authorize]
     [HttpPost]
@@ -37,7 +37,7 @@ namespace keepr.Controllers
     {
       if (ModelState.IsValid)
       {
-        vault = new Vault(vault.Name, vault.Description, vault.UserId);
+        vault.UserId = HttpContext.User.Identity.Name;
         return _repo.Create(vault);
       }
       throw new Exception("INVALID VAULT");

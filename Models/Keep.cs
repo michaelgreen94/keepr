@@ -13,14 +13,11 @@ namespace keepr.Models
     public string KeepImg { get; set; }
     public int Shares { get; set; }
     public int Views { get; set; }
+    public int Keeps { get; set; }
     public bool IsPrivate { get; set; }
     public int Id { get; set; }
+    public string UserId { get; set; }
 
     public Keep() { }
-    public Keep(string name, string description)
-    {
-      Name = name;
-      Description = description;
-    }
   }
 }

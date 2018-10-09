@@ -25,11 +25,11 @@ namespace keepr.Controllers
       return _repo.GetAll();
     }
 
-    // [HttpGet("{id}")]
-    // public Burger GetBurgerByID([FromRoute] int id)
-    // {
-
-    // }
+    [HttpGet("{id}")]
+    public Keep GetKeepByID([FromRoute] int id)
+    {
+      return _repo.GetByID(id);
+    }
 
     [Authorize]
     [HttpPost]
@@ -37,7 +37,7 @@ namespace keepr.Controllers
     {
       if (ModelState.IsValid)
       {
-        keep = new Keep(keep.Name, keep.Description);
+        keep.UserId = HttpContext.User.Identity.Name;
         return _repo.Create(keep);
       }
       throw new Exception("INVALID KEEP");
