@@ -21,20 +21,21 @@ namespace keepr.Repositories
     {
       return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps;");
     }
+
     //GET Keeps BY vault ID
-    public Vaultkeep GetByVaultID(int id)
+    public IEnumerable<Keep> GetByVaultID(int vaultId)
     {
-      return _db.Query<Vaultkeep>(@"
+      return _db.Query<Keep>(@"
       SELECT * FROM vaultkeeps vk
-      INNER JOIN keeps k on k.id = vk.keepId
-      WHERE (vaultId = @VaultId);", new { id }).FirstOrDefault();
+      INNER JOIN keeps k ON k.id = vk.keepId
+      WHERE (vaultId = @vaultId)", new { vaultId });
     }
 
     //GET VaultKeep BY ID
-    public Vaultkeep GetByID(int id)
-    {
-      return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id }).FirstOrDefault();
-    }
+    // public Vaultkeep GetByID(int id)
+    // {
+    //   return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id }).FirstOrDefault();
+    // }
 
     //CREATE VaultKeep
     public Vaultkeep Create(Vaultkeep vaultkeep)
@@ -48,14 +49,14 @@ namespace keepr.Repositories
       return vaultkeep;
     }
 
-    //UPDATE Vaultkeep
-    // public Vaultkeep Update(Vaultkeep vaultkeep)
-    // {
-    //   _db.Execute(@"UPDATE vaultkeeps
-    //   SET name = @Name, description = @Description
-    //   WHERE id = @Id;", vaultkeep);
-    //   return vaultkeep;
-    // }
+    // UPDATE Vaultkeep
+    public Vaultkeep Update(Vaultkeep vaultkeep)
+    {
+      _db.Execute(@"UPDATE vaultkeeps
+      SET vaultid = @VaultId, keepid = @KeepId
+      WHERE id = @Id;", vaultkeep);
+      return vaultkeep;
+    }
 
     //DELETE Vaultkeep
     public Vaultkeep Delete(Vaultkeep vaultkeep)

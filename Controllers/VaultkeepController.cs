@@ -27,10 +27,17 @@ namespace keepr.Controllers
 
     //gets keeps by vault id
     [HttpGet("{id}")]
-    public Vaultkeep GetKeepByVaultId([FromRoute] int id)
+    public IEnumerable<Keep> getallkeepsinvault([FromRoute] int id)
     {
-      return _repo.GetByID(id);
+      return _repo.GetByVaultID(id);
     }
+
+
+    // [HttpGet("{id}")]
+    // public Vaultkeep GetVaultKeepById([FromRoute] int id)
+    // {
+    //   return _repo.GetByID(id);
+    // }
 
     [Authorize]
     [HttpPost]
@@ -44,11 +51,11 @@ namespace keepr.Controllers
       throw new Exception("INVALID VAULTKEEP");
     }
 
-    // [HttpPut]
-    // public Vaultkeep Put([FromBody] Vaultkeep vaultkeep)
-    // {
-    //   return _repo.Update(vaultkeep);
-    // }
+    [HttpPut]
+    public Vaultkeep Put([FromBody] Vaultkeep vaultkeep)
+    {
+      return _repo.Update(vaultkeep);
+    }
 
     [HttpDelete("{id}")]
     public void Delete([FromRoute] int id)
