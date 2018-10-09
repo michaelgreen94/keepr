@@ -25,13 +25,6 @@ namespace keepr.Controllers
       return _repo.GetAll();
     }
 
-    //gets keeps by vault id
-    [HttpGet("{id}")]
-    public Keep GetKeepsByVaultID([FromRoute] int id)
-    {
-      return _repo.GetByVaultID(id);
-    }
-
     //gets keep by keepid
     [HttpGet("{id}")]
     public Keep GetKeepByID([FromRoute] int id)

@@ -22,14 +22,6 @@ namespace keepr.Repositories
       return _db.Query<Keep>("SELECT * FROM keeps;");
     }
 
-    //GET Keeps BY vault ID
-    public Keep GetByVaultID(int id)
-    {
-      return _db.Query<Keep>(@"
-      SELECT * FROM vaultkeeps vk
-      INNER JOIN keeps k on k.id = vk.keepId
-      WHERE (vaultId = @VaultId);", new { id }).FirstOrDefault();
-    }
     public Keep GetByID(int id)
     {
       return _db.Query<Keep>("SELECT * FROM keeps WHERE id = @id;", new { id }).FirstOrDefault();

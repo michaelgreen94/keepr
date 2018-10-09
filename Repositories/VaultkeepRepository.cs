@@ -16,14 +16,13 @@ namespace keepr.Repositories
 
     //CRUD VIA SQL
 
-    //GET ALL KeepS
+    //GET ALL VaultKeepS
     public IEnumerable<Vaultkeep> GetAll()
     {
       return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps;");
     }
-
-    //GET Keep BY ID
-    public Vaultkeep GetByID(int id)
+    //GET Keeps BY vault ID
+    public Vaultkeep GetByVaultID(int id)
     {
       return _db.Query<Vaultkeep>(@"
       SELECT * FROM vaultkeeps vk
@@ -31,7 +30,13 @@ namespace keepr.Repositories
       WHERE (vaultId = @VaultId);", new { id }).FirstOrDefault();
     }
 
-    //CREATE Keep
+    //GET VaultKeep BY ID
+    public Vaultkeep GetByID(int id)
+    {
+      return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id }).FirstOrDefault();
+    }
+
+    //CREATE VaultKeep
     public Vaultkeep Create(Vaultkeep vaultkeep)
     {
       int id = _db.ExecuteScalar<int>(@"
