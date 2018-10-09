@@ -10,11 +10,11 @@ namespace keepr.Models
     [Required]
     [MaxLength(255)]
     public string Description { get; set; }
-    public string KeepImg { get; set; }
+    public string Img { get; set; }
     public int Shares { get; set; }
     public int Views { get; set; }
     public int Keeps { get; set; }
-    public bool IsPrivate { get; set; }
+    public bool IsPrivate { get; set; } = true;
     public int Id { get; set; }
     public string UserId { get; set; }
 

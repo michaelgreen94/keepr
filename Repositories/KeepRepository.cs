@@ -22,7 +22,14 @@ namespace keepr.Repositories
       return _db.Query<Keep>("SELECT * FROM keeps;");
     }
 
-    //GET Keep BY ID
+    //GET Keeps BY vault ID
+    public Keep GetByVaultID(int id)
+    {
+      return _db.Query<Keep>(@"
+      SELECT * FROM vaultkeeps vk
+      INNER JOIN keeps k on k.id = vk.keepId
+      WHERE (vaultId = @VaultId);", new { id }).FirstOrDefault();
+    }
     public Keep GetByID(int id)
     {
       return _db.Query<Keep>("SELECT * FROM keeps WHERE id = @id;", new { id }).FirstOrDefault();
@@ -32,8 +39,8 @@ namespace keepr.Repositories
     public Keep Create(Keep keep)
     {
       int id = _db.ExecuteScalar<int>(@"
-      INSERT INTO keeps (name, description, keepimg, shares, views, keeps, isprivate, userid)
-      Values (@Name, @Description, @KeepImg, @Shares, @Views, @Keeps, @IsPrivate, @UserId);
+      INSERT INTO keeps (name, description, img, shares, views, keeps, isprivate, userid)
+      Values (@Name, @Description, @Img, @Shares, @Views, @Keeps, @IsPrivate, @UserId);
       SELECT LAST_INSERT_ID();", keep
       );
       keep.Id = id;

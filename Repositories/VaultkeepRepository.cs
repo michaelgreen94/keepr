@@ -28,7 +28,7 @@ namespace keepr.Repositories
       return _db.Query<Vaultkeep>(@"
       SELECT * FROM vaultkeeps vk
       INNER JOIN keeps k on k.id = vk.keepId
-      WHERE (vaultId = @vaultId);", new { id }).FirstOrDefault();
+      WHERE (vaultId = @VaultId);", new { id }).FirstOrDefault();
     }
 
     //CREATE Keep
