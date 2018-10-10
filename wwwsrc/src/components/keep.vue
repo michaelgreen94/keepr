@@ -1,6 +1,6 @@
 <template>
       <v-layout align-start justify-start row wrap class="keep">
-        <v-flex xs12 sm6 md3 v-for="keep in keeps" :key="keep._id">
+        <v-flex xs12 sm6 md3 v-for="keep in filteredkeeps" :key="keep._id">
           <v-card hover tile v-if="keep.isPrivate == false" raised color="#555356">
             <v-img :src="keep.img" height="200px"></v-img>
             <br>
@@ -21,6 +21,7 @@
 <script>
 export default {
   name: "keep",
+  props: ["filteredkeeps"],
   computed: {
     keeps() {
       return this.$store.state.keeps;

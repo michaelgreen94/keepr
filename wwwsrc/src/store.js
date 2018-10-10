@@ -21,7 +21,6 @@ export default new Vuex.Store({
   state: {
     user: {},
     keeps: [],
-    activekeeps: []
   },
   mutations: {
     setUser(state, user) {
@@ -29,11 +28,7 @@ export default new Vuex.Store({
     },
     setkeeps(state, keeps) {
       state.keeps = keeps
-      state.activekeeps = keeps
     },
-    setactivekeeps(state, keeps) {
-      state.activekeeps = keeps
-    }
   },
   actions: {
     register({ commit, dispatch }, newUser) {
@@ -66,6 +61,14 @@ export default new Vuex.Store({
           console.log('Login Failed')
         })
     },
+    logout({ commit, dispatch }) {
+      auth.delete('logout')
+        .then(res => {
+          commit('logout', res)
+          router.push({ name: 'login' })
+        })
+        .catch(err => console.error(err))
+    },
     //keep actions
     getkeeps({ commit, dispatch }) {
       api.get('keeps')
@@ -73,13 +76,5 @@ export default new Vuex.Store({
           commit('setkeeps', res.data)
         })
     },
-    getsearchedkeeps({ commit, dispatch }, search) {
-      api.get('keeps')
-        .then(res => {
-          let keeps = res.data
-          const results = keeps.filter(keep => keep.name.includes(search))
-          commit('setactivekeeps', results)
-        })
-    }
   }
 })

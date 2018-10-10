@@ -3,7 +3,7 @@
     <v-toolbar class="white--text" color="#353438">
       <v-toolbar-title>Keepr</v-toolbar-title>
       <v-spacer></v-spacer>
-        <v-text-field v-if="search" flat label="Search" solo-inverted></v-text-field>
+        <v-text-field v-if="search" flat label="Search" v-model="searched" solo-inverted></v-text-field>
       <v-btn icon>
         <v-icon @click="search = !search">search</v-icon>
       </v-btn>
@@ -48,7 +48,7 @@
       </v-dialog>
     </v-layout>
     <v-container grid-list-md fluid>
-      <keep />
+      <keep v-bind:filteredkeeps="filteredkeeps"/>
     </v-container>
   </div>
 </template>
@@ -75,6 +75,7 @@ export default {
         password: "",
         username: ""
       },
+      searched: "",
       valid: true,
       usernameRules: [
         v => !!v || "Username is Required",
@@ -106,6 +107,16 @@ export default {
     },
     getkeeps() {
       this.$store.dispatch("getkeeps");
+    },
+    wantedkeeps() {
+      this.$store.dispatch("getsearchedkeeps", this.searched);
+    }
+  },
+  computed: {
+    filteredkeeps: function() {
+      return this.$store.state.keeps.filter(keep => {
+        return keep.name.match(this.searched);
+      });
     }
   },
   components: {
