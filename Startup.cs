@@ -42,7 +42,7 @@ namespace keepr
           options.LoginPath = "/Account/Login";
           options.Events.OnRedirectToLogin = (context) =>
           {
-            context.Response.StatusCode = 401;
+            context.Response.StatusCode = 403;
             return Task.CompletedTask;
           };
         });

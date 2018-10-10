@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <v-toolbar fixed>
+        <v-toolbar>
             <v-toolbar-side-icon></v-toolbar-side-icon>
             <v-toolbar-title>Keepr</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -39,10 +39,14 @@
                 </v-card>
             </v-dialog>
         </v-layout>
+        <v-container grid-list-md>
+          <keep/>
+        </v-container>
     </div>
 </template>
 
 <script>
+import keep from "../components/keep.vue";
 export default {
   name: "login",
   mounted() {
@@ -77,6 +81,9 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.getkeeps();
+  },
   methods: {
     register() {
       this.$store.dispatch("register", this.newUser);
@@ -86,7 +93,13 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+    getkeeps() {
+      this.$store.dispatch("getkeeps");
     }
+  },
+  components: {
+    keep
   }
 };
 </script>

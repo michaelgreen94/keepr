@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.Controllers
 {
-  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class KeepsController : Controller
@@ -44,12 +43,14 @@ namespace keepr.Controllers
       throw new Exception("INVALID KEEP");
     }
 
+    [Authorize]
     [HttpPut]
     public Keep Put([FromBody] Keep keep)
     {
       return _repo.Update(keep);
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public void Delete([FromRoute] int id)
     {

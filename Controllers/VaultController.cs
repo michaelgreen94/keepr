@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.Controllers
 {
-  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class VaultController : Controller
@@ -43,12 +42,14 @@ namespace keepr.Controllers
       throw new Exception("INVALID VAULT");
     }
 
+    [Authorize]
     [HttpPut]
     public Vault Put([FromBody] Vault vault)
     {
       return _repo.Update(vault);
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public void Delete([FromRoute] int id)
     {
