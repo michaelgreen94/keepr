@@ -20,7 +20,8 @@ let api = Axios.create({
 export default new Vuex.Store({
   state: {
     user: {},
-    keeps: []
+    keeps: [],
+    activekeeps: []
   },
   mutations: {
     setUser(state, user) {
@@ -28,6 +29,10 @@ export default new Vuex.Store({
     },
     setkeeps(state, keeps) {
       state.keeps = keeps
+      state.activekeeps = keeps
+    },
+    setactivekeeps(state, keeps) {
+      state.activekeeps = keeps
     }
   },
   actions: {
@@ -66,6 +71,14 @@ export default new Vuex.Store({
       api.get('keeps')
         .then(res => {
           commit('setkeeps', res.data)
+        })
+    },
+    getsearchedkeeps({ commit, dispatch }, search) {
+      api.get('keeps')
+        .then(res => {
+          let keeps = res.data
+          const results = keeps.filter(keep => keep.name.includes(search))
+          commit('setactivekeeps', results)
         })
     }
   }

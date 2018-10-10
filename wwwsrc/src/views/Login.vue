@@ -3,6 +3,10 @@
     <v-toolbar class="white--text" color="#353438">
       <v-toolbar-title>Keepr</v-toolbar-title>
       <v-spacer></v-spacer>
+        <v-text-field v-if="search" flat label="Search" solo-inverted></v-text-field>
+      <v-btn icon>
+        <v-icon @click="search = !search">search</v-icon>
+      </v-btn>
       <v-toolbar-items>
         <v-btn class="white--text" @click="showForms = !showForms" flat>Login/Register</v-btn>
       </v-toolbar-items>
@@ -61,6 +65,7 @@ export default {
     return {
       loginForm: false,
       showForms: false,
+      search: false,
       creds: {
         email: "",
         password: ""
