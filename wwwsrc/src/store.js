@@ -29,6 +29,10 @@ export default new Vuex.Store({
     setkeeps(state, keeps) {
       state.keeps = keeps
     },
+    logout(state, data) {
+      console.log(data)
+      state.user = {}
+    }
   },
   actions: {
     register({ commit, dispatch }, newUser) {

@@ -93,7 +93,7 @@ export default {
     };
   },
   mounted() {
-    this.getkeeps();
+    this.getkeeps(), this.$store.dispatch("authenticate");
   },
   methods: {
     register() {

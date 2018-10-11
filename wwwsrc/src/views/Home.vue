@@ -12,17 +12,46 @@
         <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn>
       </v-toolbar-items>
     </v-toolbar>
+    <v-container grid-list-md fluid>
+      <keep v-bind:filteredkeeps="filteredkeeps" />
+      <v-speed-dial fixed bottom right>
+        <v-btn slot="activator" v-model="fab" color="darken-2" dark fab>
+          <v-icon>account_circle</v-icon>
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="green">
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="indigo">
+          <v-icon>add</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="red">
+          <v-icon>delete</v-icon>
+        </v-btn>
+      </v-speed-dial>
+    </v-container>
   </div>
 </template>
 
 <script>
+import keep from "../components/keep.vue";
 export default {
   name: "home",
   data() {
     return {
       dashboard: false,
       search: false,
-      searched: ""
+      searched: "",
+      direction: "top",
+      fab: false,
+      fling: false,
+      hover: false,
+      tabs: null,
+      top: false,
+      right: true,
+      bottom: true,
+      left: false,
+      transition: "slide-y-reverse-transition"
     };
   },
   methods: {
@@ -42,6 +71,12 @@ export default {
         return keep.name.match(this.searched);
       });
     }
+  },
+  components: {
+    keep
   }
 };
 </script>
+
+<style>
+</style>
