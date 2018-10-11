@@ -57,9 +57,9 @@ namespace keepr.Repositories
     }
 
     //DELETES A Vault BY ITS ID
-    public int Delete(int id)
+    public bool Delete(int id, string userid)
     {
-      return _db.Execute("DELETE FROM vaults WHERE id = @id", new { id });
+      return _db.Execute("DELETE FROM vaults WHERE id = @id AND userid = @userid", new { id, userid }) == 1;
     }
 
   }

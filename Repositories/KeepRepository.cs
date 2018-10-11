@@ -49,16 +49,16 @@ namespace keepr.Repositories
     }
 
     //DELETE Keep
-    public Keep Delete(Keep keep)
-    {
-      _db.Execute("DELETE FROM keeps WHERE id = @Id");
-      return keep;
-    }
+    // public Keep Delete(Keep keep)
+    // {
+    //   _db.Execute("DELETE FROM keeps WHERE id = @Id", keep);
+    //   return keep;
+    // }
 
     //DELETES A Keep BY ITS ID
-    public int Delete(int id)
+    public bool Delete(int id, string userid)
     {
-      return _db.Execute("DELETE FROM keeps WHERE id = @id", new { id });
+      return _db.Execute("DELETE FROM keeps WHERE id = @id AND userid = @userid AND isPrivate = true", new { id, userid }) == 1;
     }
 
   }

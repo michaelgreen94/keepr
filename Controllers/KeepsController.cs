@@ -52,9 +52,10 @@ namespace keepr.Controllers
 
     [Authorize]
     [HttpDelete("{id}")]
-    public void Delete([FromRoute] int id)
+    public bool Delete([FromRoute] int id)
     {
-      _repo.Delete(id);
+      string UserId = HttpContext.User.Identity.Name;
+      return _repo.Delete(id, UserId);
     }
 
   }

@@ -22,7 +22,7 @@
                 <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
                 <v-btn :disabled="!valid" @click="loginUser">Login</v-btn>
-                <v-btn @click="clear">clear</v-btn>
+                <v-btn type="reset">Reset</v-btn>
                 <v-layout justify-center>
                   <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
                   <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>
@@ -36,7 +36,7 @@
                 <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
                 <v-btn :disabled="!valid" @click="register">Register</v-btn>
-                <v-btn @click="clear">clear</v-btn>
+                <v-btn type="reset">Reset</v-btn>
                 <v-layout justify-center>
                   <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
                   <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>

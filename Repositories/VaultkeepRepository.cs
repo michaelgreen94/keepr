@@ -59,16 +59,16 @@ namespace keepr.Repositories
     }
 
     //DELETE Vaultkeep
-    public Vaultkeep Delete(Vaultkeep vaultkeep)
-    {
-      _db.Execute("DELETE FROM vaultkeeps WHERE id = @Id");
-      return vaultkeep;
-    }
+    // public Vaultkeep Delete(Vaultkeep vaultkeep)
+    // {
+    //   _db.Execute("DELETE FROM vaultkeeps WHERE id = @Id");
+    //   return vaultkeep;
+    // }
 
     //DELETES A Vaultkeep BY ITS ID
-    public int Delete(int id)
+    public bool Delete(int id, string userid)
     {
-      return _db.Execute("DELETE FROM vaultkeeps WHERE id = @id", new { id });
+      return _db.Execute("DELETE FROM vaultkeeps WHERE id = @id AND userid = @userid", new { id, userid }) == 1;
     }
 
   }
