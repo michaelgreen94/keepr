@@ -59,7 +59,6 @@ export default {
 }
 
 .card {
-  break-inside: avoid;
   width: 20rem;
   margin-bottom: 0.5rem;
   position: relative;

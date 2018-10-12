@@ -8,12 +8,12 @@
         <v-icon @click="search = !search">search</v-icon>
       </v-btn>
       <v-toolbar-items>
-        <v-btn class="white--text" @click="logout" flat>Logout</v-btn>
-        <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn>
+        <!-- <v-btn class="white--text" @click="logout" flat>Logout</v-btn>
+        <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn> -->
       </v-toolbar-items>
     </v-toolbar>
       <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
-            <v-card flat>
+            <v-card dark flat>
               <form ref="form">
                 <v-text-field v-model="create.name" @submit.prevent="createkeep" label="Name" required></v-text-field>
                 <v-text-field v-model="create.description" label="Description" required></v-text-field>
@@ -24,23 +24,19 @@
             </v-card>
       </v-dialog>
       <keep v-bind:filteredkeeps="filteredkeeps" />
-      <v-speed-dial fixed bottom right>
+      <v-speed-dial fixed bottom left right>
         <v-btn slot="activator" color="darken-2" dark fab>
-          <v-icon>add</v-icon>
-          <v-icon>close</v-icon>
+          <v-icon>account_circle</v-icon>
         </v-btn>
-        <!-- <v-btn fab dark small color="green">
-          <v-icon>edit</v-icon>
-        </v-btn> -->
-        <v-btn @click="addkeep = !addkeep" dark>keep</v-btn>
-        <!-- <v-btn fab dark small color="red">
-          <v-icon>delete</v-icon>
-        </v-btn> -->
+        <v-btn dark @click="logout">Logout</v-btn>
+        <dashboard/>
+        <v-btn @click="addkeep = !addkeep" dark>Add Keep</v-btn>
       </v-speed-dial>
   </div>
 </template>
 
 <script>
+import dashboard from "../components/dashboard.vue";
 import keep from "../components/keep.vue";
 export default {
   name: "home",
@@ -79,7 +75,8 @@ export default {
     }
   },
   components: {
-    keep
+    keep,
+    dashboard
   }
 };
 </script>

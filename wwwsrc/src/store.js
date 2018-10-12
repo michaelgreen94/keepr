@@ -30,7 +30,6 @@ export default new Vuex.Store({
       state.keeps = keeps
     },
     logout(state, data) {
-      console.log(data)
       state.user = {}
     },
     updatekeeps(state, data) {
@@ -100,6 +99,10 @@ export default new Vuex.Store({
         .then(res => {
           dispatch('getkeeps')
         })
-    }
+    },
+    getvaults({ commit, dispatch }) { },
+    addvault({ commit, dispatch }) { },
+    deletevault({ commit, dispatch }) { },
+    updatevault({ commit, dispatch }) { }
   }
 })
