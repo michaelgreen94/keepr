@@ -16,32 +16,32 @@
         <v-card>
           <v-container>
             <v-card flat v-if="loginForm">
-              <v-form ref="form">
+              <form ref="form">
                 <v-text-field v-model="creds.email" @submit.prevent="loginUser" :rules="emailRules" label="E-mail"
                   required></v-text-field>
                 <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
-                <v-btn :disabled="!valid" @click="loginUser">Login</v-btn>
+                <v-btn :disabled="!valid" type="submit" @click="loginUser">Login</v-btn>
                 <v-btn type="reset">Reset</v-btn>
                 <v-layout justify-center>
                   <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
                   <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>
                 </v-layout>
-              </v-form>
+              </form>
             </v-card>
             <v-card flat v-else>
-              <v-form ref="form">
+              <form ref="form">
                 <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
                 <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
                 <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
-                <v-btn :disabled="!valid" @click="register">Register</v-btn>
+                <v-btn :disabled="!valid" type="submit" @click="register">Register</v-btn>
                 <v-btn type="reset">Reset</v-btn>
                 <v-layout justify-center>
                   <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
                   <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>
                 </v-layout>
-              </v-form>
+              </form>
             </v-card>
           </v-container>
         </v-card>
@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      loginForm: false,
+      loginForm: true,
       showForms: false,
       search: false,
       creds: {

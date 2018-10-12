@@ -12,22 +12,40 @@
         <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-container grid-list-md fluid>
+    <v-layout row justify-center>
+      <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
+        <v-card>
+          <v-container>
+            <v-card flat>
+              <form ref="form">
+                <v-title name="title">Add Keep</v-title>
+                <v-text-field v-model="create.name" @submit.prevent="createkeep" label="Name" required></v-text-field>
+                <v-text-field v-model="create.description" label="Description" required></v-text-field>
+                <v-text-field v-model="create.imgurl" label="Img-URL"></v-text-field>
+                <v-btn type="submit" @click="createkeep">Create</v-btn>
+                <v-btn type="reset">Reset</v-btn>
+              </form>
+            </v-card>
+          </v-container>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+    <v-container fill-height grid-list-xs fluid>
       <keep v-bind:filteredkeeps="filteredkeeps" />
       <v-speed-dial fixed bottom right>
-        <v-btn slot="activator" v-model="fab" color="darken-2" dark fab>
+        <v-btn slot="activator" color="darken-2" dark fab>
           <v-icon>account_circle</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
-        <v-btn fab dark small color="green">
+        <!-- <v-btn fab dark small color="green">
           <v-icon>edit</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="indigo">
+        </v-btn> -->
+        <v-btn @click="addkeep = !addkeep" fab dark small color="indigo">
           <v-icon>add</v-icon>
         </v-btn>
-        <v-btn fab dark small color="red">
+        <!-- <v-btn fab dark small color="red">
           <v-icon>delete</v-icon>
-        </v-btn>
+        </v-btn> -->
       </v-speed-dial>
     </v-container>
   </div>
@@ -42,21 +60,20 @@ export default {
       dashboard: false,
       search: false,
       searched: "",
-      direction: "top",
-      fab: false,
-      fling: false,
-      hover: false,
-      tabs: null,
-      top: false,
-      right: true,
-      bottom: true,
-      left: false,
-      transition: "slide-y-reverse-transition"
+      addkeep: false,
+      create: {
+        name: "",
+        description: "",
+        imgurl: ""
+      }
     };
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    createkeep() {
+      this.$store.dispatch("addkeep", this.create);
     }
   },
   mounted() {

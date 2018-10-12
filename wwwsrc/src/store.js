@@ -32,6 +32,9 @@ export default new Vuex.Store({
     logout(state, data) {
       console.log(data)
       state.user = {}
+    },
+    updatekeeps(state, data) {
+      state.keeps.push(data)
     }
   },
   actions: {
@@ -80,5 +83,11 @@ export default new Vuex.Store({
           commit('setkeeps', res.data)
         })
     },
+    addkeep({ commit, dispatch }, payload) {
+      api.post('keeps', payload)
+        .then(res => {
+          dispatch('getkeeps')
+        })
+    }
   }
 })
