@@ -1,39 +1,19 @@
 <template>
-      <v-layout align-start justify-start fill-height row wrap class="keep">
-        <v-flex xs12 sm6 md4 flexbox v-for="(keep, index) in filteredkeeps" :key="keep._id">
-          <!-- :height="!(index % 3) ? '20rem' : !(index % 2) ? '25rem' : '30rem'" -->
-          <!-- @mouseover="displaycontent(keep.id)" @mouseout="hidecontent(keep.id)" -->
-          <v-card tile v-if="keep.isPrivate == false" raised hover dark>
-            <v-img :src="keep.img">
-            <v-card-text class="headline dark--text">{{keep.name}}</v-card-text>
-            <v-card-text class="dark--text">{{keep.description}}</v-card-text>
-            </v-img>
-              <v-layout class="dark--text my-2" justify-space-around>
-                <i class="far fa-eye">: {{keep.views}}</i>
-                <i class="fab fa-kaggle">: {{keep.keeps}}</i>
-                <i class="fas fa-share">: {{keep.shares}}</i>
-              </v-layout>
-            <v-card-actions class="actions" >
-              <v-layout justify-center>
-              <v-btn dark><i class="far fa-eye"></i></v-btn>
-              <v-btn dark><i class="fab fa-kaggle"></i></v-btn>
-              <v-btn dark><i class="fas fa-share"></i></v-btn>
-              </v-layout>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <!-- <div class="content">
-        <div class="keep">
-          <div class="keep-holder" v-bind:class="{one:index == 1}, {two:index == 2}" v-for="(keep, index) in filteredkeeps" :key="keep._id">
-            <div class="keepimg">
-              <div class="keepname">{{keep.name}}</div>
-              <div class="keepdescription">{{keep.description}}</div>
-              <div class="keepicons"></div>
-            </div>
-          </div>
+  <div class="keep">
+    <div class="card" v-for="keep in filteredkeeps" :key="keep.id">
+        <img :src="keep.img" alt="" class="cardimage">
+        <div class="cardtext">
+          <h1>{{keep.name}}</h1>
+          <p>{{keep.description}}</p>
         </div>
-      </div> -->
+        <div class="keepicons" >
+          <i @click="sharekeep(keep)" class="share far fa-share-square">: {{keep.shares}}</i>
+          <i @click="viewkeep(keep)" class="view far fa-eye">: {{keep.views}}</i>
+          <i @click="addtovault(keep)" class="korvue fab fa-korvue">: {{keep.keeps}}</i>
+          <i class="delete far fa-trash-alt" v-if="user.active && keep.isPrivate == true" @click="deletekeep(keep.id)"></i>
+        </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -46,14 +26,20 @@ export default {
   },
   props: ["filteredkeeps"],
   methods: {
-    // displaycontent(id) {
-    //   $("actions").css({ display: "flex" });
-    //   this.hover = true;
-    // },
-    // hidecontent(id) {
-    //   $("actions").css({ display: "none" });
-    //   this.hover = false;
-    // }
+    deletekeep(id) {
+      this.$store.dispatch("deletekeep", id);
+    },
+    sharekeep(keep) {
+      keep.shares++;
+      this.$store.dispatch("updatekeep", keep);
+    },
+    viewkeep(keep) {
+      keep.views++;
+      this.$store.dispatch("updatekeep", keep);
+    },
+    addtovault(keep) {
+      this.$store.dispatch("addtovault", keep);
+    }
   },
   computed: {
     keeps() {
@@ -66,42 +52,74 @@ export default {
 };
 </script>
 <style>
-/* .content {
-  grid-template-columns: repeat(6, 1rf);
-  grid-auto-rows: minmax(10rem, auto);
-  grid-gap: 0.5rem;
+.keep {
+  column-width: 20rem;
+  column-count: auto;
+  padding: 0.5rem 0.5rem;
 }
 
-.content div {
-  background: #333;
-  padding: 30px;
+.card {
+  break-inside: avoid;
+  width: 20rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card:hover .keepicons {
+  height: 5rem;
+}
+
+.cardimage {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cardtext {
+  width: fit-content;
+  position: absolute;
+  font-size: 12px;
+  bottom: 0;
+  left: 1rem;
   color: white;
+  opacity: 0;
 }
 
-.one {
-  grid-column: 1/3;
-  grid-row: 1/5;
-  background-color: blue;
+.card:hover .cardtext {
+  opacity: 1;
 }
 
-.two {
-  grid-column: 3/7;
-  grid-row: 1/3;
-  background-color: ;
+.keepicons {
+  width: 100%;
+  height: 0;
+  position: absolute;
+  top: 100%;
+  z-index: 3;
+  overflow: hidden;
+  transition: height 0.2s;
+  background-color: #353438;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.three {
-  grid-column: 3/5;
-  grid-row: 3/5;
+.delete:hover {
+  color: black;
 }
 
-.four {
-  grid-column: 5/7;
-  grid-row: 3/7;
+.share:hover {
+  color: black;
 }
 
-.five {
-  grid-column: 1/5;
-  grid-row: 5/7;
-} */
+.view:hover {
+  color: black;
+}
+
+.korvue:hover {
+  color: black;
+}
 </style>

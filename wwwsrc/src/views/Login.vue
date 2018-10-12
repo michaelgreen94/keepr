@@ -11,11 +11,8 @@
         <v-btn class="white--text" @click="showForms = !showForms" flat>Login/Register</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-layout row justify-center>
       <v-dialog v-model="showForms" scrollable width="45rem" transition="scale-transition">
-        <v-card>
-          <v-container>
-            <v-card flat v-if="loginForm">
+            <v-card dark flat v-if="loginForm">
               <form ref="form">
                 <v-text-field v-model="creds.email" @submit.prevent="loginUser" :rules="emailRules" label="E-mail"
                   required></v-text-field>
@@ -29,7 +26,7 @@
                 </v-layout>
               </form>
             </v-card>
-            <v-card flat v-else>
+            <v-card dark flat v-else>
               <form ref="form">
                 <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
                 <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
@@ -43,13 +40,8 @@
                 </v-layout>
               </form>
             </v-card>
-          </v-container>
-        </v-card>
       </v-dialog>
-    </v-layout>
-    <v-container grid-list-md fluid>
       <keep v-bind:filteredkeeps="filteredkeeps"/>
-    </v-container>
   </div>
 </template>
 
@@ -124,3 +116,12 @@ export default {
   }
 };
 </script>
+
+<style>
+.keepcontainer {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 0;
+  text-align: center;
+}
+</style>

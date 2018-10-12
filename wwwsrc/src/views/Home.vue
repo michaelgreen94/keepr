@@ -12,42 +12,31 @@
         <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-layout row justify-center>
       <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
-        <v-card>
-          <v-container>
             <v-card flat>
               <form ref="form">
-                <v-title name="title">Add Keep</v-title>
                 <v-text-field v-model="create.name" @submit.prevent="createkeep" label="Name" required></v-text-field>
                 <v-text-field v-model="create.description" label="Description" required></v-text-field>
-                <v-text-field v-model="create.imgurl" label="Img-URL"></v-text-field>
+                <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
                 <v-btn type="submit" @click="createkeep">Create</v-btn>
                 <v-btn type="reset">Reset</v-btn>
               </form>
             </v-card>
-          </v-container>
-        </v-card>
       </v-dialog>
-    </v-layout>
-    <v-container fill-height grid-list-xs fluid>
       <keep v-bind:filteredkeeps="filteredkeeps" />
       <v-speed-dial fixed bottom right>
         <v-btn slot="activator" color="darken-2" dark fab>
-          <v-icon>account_circle</v-icon>
+          <v-icon>add</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
         <!-- <v-btn fab dark small color="green">
           <v-icon>edit</v-icon>
         </v-btn> -->
-        <v-btn @click="addkeep = !addkeep" fab dark small color="indigo">
-          <v-icon>add</v-icon>
-        </v-btn>
+        <v-btn @click="addkeep = !addkeep" dark>keep</v-btn>
         <!-- <v-btn fab dark small color="red">
           <v-icon>delete</v-icon>
         </v-btn> -->
       </v-speed-dial>
-    </v-container>
   </div>
 </template>
 
@@ -64,7 +53,7 @@ export default {
       create: {
         name: "",
         description: "",
-        imgurl: ""
+        img: ""
       }
     };
   },
