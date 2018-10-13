@@ -10,9 +10,23 @@
           <i @click="sharekeep(keep)" class="share far fa-share-square">: {{keep.shares}}</i>
           <i @click="viewkeep(keep)" class="view far fa-eye">: {{keep.views}}</i>
           <i @click="addtovault(keep)" class="korvue fab fa-korvue">: {{keep.keeps}}</i>
+          <v-btn @click="editkeep = !editkeep">edit</v-btn>
           <i class="delete far fa-trash-alt" v-if="user.active && keep.isPrivate == true" @click="deletekeep(keep.id)"></i>
         </div>
     </div>
+    <v-dialog v-model="editkeep" absolute scrollable width="45rem" transition="scale-transition">
+            <v-card dark flat>
+              <form ref="form">
+                <v-text-field v-model="create.name" @submit.prevent="editkeep" label="Name" required></v-text-field>
+                <v-text-field v-model="create.description" label="Description" required></v-text-field>
+                <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
+                <v-btn v-if="activekeep.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+                <v-btn v-else @click="create.isprivate = false">Private</v-btn>
+                <v-btn type="submit" @click="editkeep">Create</v-btn>
+                <v-btn type="reset">Reset</v-btn>
+              </form>
+            </v-card>
+      </v-dialog>
   </div>
 </template>
 
@@ -21,7 +35,13 @@ export default {
   name: "keep",
   data() {
     return {
-      // hover: false
+      editkeep: false,
+      create: {
+        name: "",
+        description: "",
+        img: "",
+        isprivate: false
+      }
     };
   },
   props: ["filteredkeeps"],
@@ -39,6 +59,9 @@ export default {
     },
     addtovault(keep) {
       this.$store.dispatch("addtovault", keep);
+    },
+    editkeep() {
+      this.$store.dispatch("updatekeep", this.create);
     }
   },
   computed: {
@@ -47,6 +70,9 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    activekeep() {
+      return this.$store.state.activekeep;
     }
   }
 };

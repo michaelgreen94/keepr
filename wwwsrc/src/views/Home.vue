@@ -7,10 +7,6 @@
       <v-btn icon>
         <v-icon @click="search = !search">search</v-icon>
       </v-btn>
-      <v-toolbar-items>
-        <!-- <v-btn class="white--text" @click="logout" flat>Logout</v-btn>
-        <v-btn class="white--text" @click="dashboard = !dashboard" flat>Dashboard</v-btn> -->
-      </v-toolbar-items>
     </v-toolbar>
       <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
             <v-card dark flat>
@@ -18,6 +14,8 @@
                 <v-text-field v-model="create.name" @submit.prevent="createkeep" label="Name" required></v-text-field>
                 <v-text-field v-model="create.description" label="Description" required></v-text-field>
                 <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
+                <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+                <v-btn v-else @click="create.isprivate = false">Private</v-btn>
                 <v-btn type="submit" @click="createkeep">Create</v-btn>
                 <v-btn type="reset">Reset</v-btn>
               </form>
@@ -49,7 +47,8 @@ export default {
       create: {
         name: "",
         description: "",
-        img: ""
+        img: "",
+        isprivate: false
       }
     };
   },
@@ -61,12 +60,12 @@ export default {
       this.$store.dispatch("addkeep", this.create);
     }
   },
-  mounted() {
-    //blocks users not logged in
-    if (!this.$store.state.user.id) {
-      this.$router.push({ name: "login" });
-    }
-  },
+  // mounted() {
+  //   //blocks users not logged in
+  //   if (!this.$store.state.user.id) {
+  //     this.$router.push({ name: "login" });
+  //   }
+  // },
   computed: {
     filteredkeeps: function() {
       return this.$store.state.keeps.filter(keep => {
