@@ -11,7 +11,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <vault/>
-        <v-dialog v-model="vaultmodal" absolute scrollable width="45rem" transition="scale-transition">
+        <v-dialog v-model="createvault" absolute scrollable width="45rem" transition="scale-transition">
             <v-card dark flat>
               <form ref="form">
                 <v-text-field v-model="addvault.name" @submit.prevent="createvault" label="Name" required></v-text-field>
@@ -25,7 +25,7 @@
         <v-btn slot="activator" color="darken-2" dark fab>
           <v-icon>add</v-icon>
         </v-btn>
-        <v-btn @click="vaultmodal = !vaultmodal" dark>Add Vault</v-btn>
+        <v-btn @click="createvault = !createvault" dark>Add Vault</v-btn>
       </v-speed-dial>
       </v-card>
     </v-dialog>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       dialog: false,
-      vaultmodal: false,
+      createvault: false,
       addvault: {
         name: "",
         description: ""
