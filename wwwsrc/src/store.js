@@ -41,6 +41,15 @@ export default new Vuex.Store({
     },
     setactivekeep(state, keep) {
       state.activekeep = keep
+    },
+    setvaults(state, vaults) {
+      state.vaults = vaults
+    },
+    setactivevault(state, vault) {
+      state.activevault = vault
+    },
+    setvaultkeeps(state, keeps) {
+      state.vaultkeeps = keeps
     }
   },
   actions: {
@@ -90,7 +99,7 @@ export default new Vuex.Store({
         })
     },
     getsinglekeep({ commit, dispatch }, id) {
-      api.get('keep/' + id)
+      api.get('keeps/' + id)
         .then(res => {
           commit('setactivekeep', res.data)
         })
@@ -107,16 +116,57 @@ export default new Vuex.Store({
           dispatch('getkeeps')
         })
     },
-    updatekeep({ commit, dispatch }, keep) {
+    updatekeep({ commit, dispatch, state }, keep) {
       api.put('keeps', keep)
         .then(res => {
           dispatch('getkeeps')
+          if (state.activekeep.id == keep.id) {
+            commit('setactivekeep', res.data)
+          }
         })
     },
-    // getvaults({ commit, dispatch }) { },
-    // addvault({ commit, dispatch }) { },
-    // deletevault({ commit, dispatch }) { },
-    // updatevault({ commit, dispatch }) { },
-    // getvaultkeeps({ commit, dispatch }) { }
+    getvaults({ commit, dispatch }) {
+      api.get('vault')
+        .then(res => {
+          commit('setvaults', res.data)
+        })
+    },
+    createvault({ commit, dispatch }, vault) {
+      api.post('vault', vault)
+        .then(res => {
+          dispatch('getvaults')
+        })
+    },
+    deletevault({ commit, dispatch }, id) {
+      api.delete('vault/' + id)
+        .then(res => {
+          dispatch('getvaults')
+        })
+    },
+    updatevault({ commit, dispatch }, vault) {
+      api.put('vault', vault)
+        .then(res => {
+          dispatch('getvaults')
+        })
+    },
+    getvaultkeeps({ commit, dispatch }, vaultid) {
+      api.get('vaultkeep/' + vaultid)
+        .then(res => {
+          commit('setvaultkeeps', res.data)
+        })
+    },
+    getactivevault({ commit, dispatch }, vaultid) {
+      api.get('vault/' + vaultid)
+        .then(res => {
+          commit('setactivevault', res.data)
+        })
+    },
+    addtovault({ commit, dispatch }, payload) {
+      api.post('vaultkeep', payload)
+        .then(res => {
+
+          dispatch("updatekeep", payload.keep)
+        })
+    }
   }
 })

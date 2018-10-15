@@ -17,43 +17,52 @@
       </div>
     </div>
     <!-- editkeep modal -->
-    <v-dialog v-model="editkeep" absolute scrollable width="45rem" transition="scale-transition">
-      <v-card dark flat v-for="activekeep in activekeeps" :key="activekeep.id">
+    <v-dialog v-model="editkeep" absolute width="45rem" transition="scale-transition">
+      <v-card dark flat>
         <form ref="form">
-          <v-text-field v-model="create.name" @submit.prevent="editkeep" label="Name" required></v-text-field>
+          <v-text-field v-model="create.name" label="Name" required></v-text-field>
           <v-text-field v-model="create.description" label="Description" required></v-text-field>
           <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-          <v-btn v-if="activekeep.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+          <div v-if="activekeeps.isPrivate == true">
+          <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
           <v-btn v-else @click="create.isprivate = false">Private</v-btn>
-          <v-btn type="submit" @click="updatekeep(activekeep)">Submit</v-btn>
+          </div>
+          <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
           <v-btn type="reset">Reset</v-btn>
         </form>
       </v-card>
     </v-dialog>
     <!-- viewkeep modal -->
-    <v-dialog v-model="openkeep" absolute width="45" transition="scale-transition">
-      <div class="keep">
-        <div class="card" v-for="activekeep in activekeeps" :key="activekeep.id">
-          <img :src="activekeep.img" alt="" class="cardimage">
-          <div class="cardtext">
-            <h1>{{activekeep.name}}</h1>
-            <p>{{activekeep.description}}</p>
+    <!-- <v-dialog v-model="openkeep" absolute width="45"></v-dialog> -->
+    <v-dialog v-model="openkeep" absolute width="50rem" transition="scale-transition">
+      <v-card>
+      <div class="viewkeep">
+        <div class="viewcard">
+          <img :src="activekeeps.img" alt="" class="viewcardimage">
+          <div class="viewcardtext">
+            <h1>{{activekeeps.name}}</h1>
+            <p>{{activekeeps.description}}</p>
           </div>
-          <div class="keepicons">
-            <i @click="sharekeep(activekeep)" class="share far fa-share-square">: {{activekeep.shares}}</i>
-            <i class="view far fa-eye">: {{activekeep.views}}</i>
-            <v-menu>
+          <div class="viewkeepicons">
+            <i @click="sharekeep(activekeeps)" class="share far fa-share-square">: {{activekeeps.shares}}</i>
+            <i class="view far fa-eye">: {{activekeeps.views}}</i>
+            <div class="text-xs-center">
+            <v-menu v-if="user.active">
               <v-btn slot="activator">Add to Vault</v-btn>
               <v-list>
-                <v-list-tile @click="addtovault(activekeep.id, vault.id)" v-for="vault in vaults" :key="vault.id"></v-list-tile>
+                <v-list-tile v-for="vault in vaults" :key="vault.id" @click="addtovault(activekeeps, vault.id)">
+                <v-list-tile-title>{{vault.name}}</v-list-tile-title>
+                </v-list-tile>
               </v-list>
             </v-menu>
-            <i @click="addtovault(activekeep)" class="korvue fab fa-korvue">: {{activekeep.keeps}}</i>
+            </div>
+            <i @click="addtovault(activekeeps, vault.id)" class="korvue fab fa-korvue">: {{activekeeps.keeps}}</i>
             <v-btn @click="editkeep = !editkeep">edit</v-btn>
-            <i class="delete far fa-trash-alt" v-if="user.active && activekeep.isPrivate == true" @click="deletekeep(activekeep.id)"></i>
+            <i class="delete far fa-trash-alt" v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"></i>
           </div>
         </div>
       </div>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -83,25 +92,20 @@ export default {
       this.$store.dispatch("updatekeep", keep);
     },
     viewkeep(keep) {
-      debugger;
       keep.views++;
       // saveid = keep.id;
-      this.$store.dispatch("setactivekeep", keep.id);
-      debugger;
+      this.$store.dispatch("getsinglekeep", keep.id);
       this.$store.dispatch("updatekeep", keep);
     },
-    addtovault(keepid, vaultid) {
-      payload = { keepid: keepid, vaultid: vaultid };
+    addtovault(keep, vaultid) {
+      keep.keeps++;
+      let payload = { keepid: keep.id, vaultid: vaultid, keep };
       this.$store.dispatch("addtovault", payload);
     },
     updatekeep(activekeep) {
       // payload = {id: keepid, editedkeep = this.create}
-      edited = this.create;
-      activekeep.name = edited.name;
-      activekeep.description = edited.description;
-      activekeep.img = edited.img;
-      activekeep.isprivate = edited.isprivate;
-      this.$store.dispatch("updatekeep", activekeep);
+      this.create.id = activekeep.id;
+      this.$store.dispatch("updatekeep", this.create);
     }
   },
   computed: {
@@ -136,11 +140,26 @@ export default {
   margin-right: auto;
 }
 
+.viewcard {
+  width: 100%;
+  /* margin-bottom: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto; */
+}
+
 .card:hover .keepicons {
   height: 5rem;
 }
 
 .cardimage {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.viewcardimage {
   display: block;
   width: 100%;
   height: 100%;
@@ -154,6 +173,17 @@ export default {
   left: 1rem;
   color: white;
   opacity: 0;
+}
+
+.viewccardtext {
+  width: 100%;
+  /* position: absolute;
+  font-size: 12px;
+  bottom: 0;
+  left: 1rem;
+  color: white;
+  opacity: 0; */
+  background-color: white;
 }
 
 .card:hover .cardtext {
@@ -170,6 +200,21 @@ export default {
   transition: height 0.2s;
   background-color: #353438;
   color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.viewkeepicons {
+  width: 100%;
+  /* height: 0;
+  position: absolute;
+  top: 100%;
+  z-index: 3;
+  overflow: hidden;
+  transition: height 0.2s;
+  background-color: #353438;
+  color: white; */
   display: flex;
   justify-content: space-evenly;
   align-items: center;

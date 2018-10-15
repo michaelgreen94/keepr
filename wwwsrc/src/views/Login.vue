@@ -51,6 +51,7 @@ export default {
   name: "login",
   mounted() {
     //checks for valid session
+    this.getkeeps();
     this.$store.dispatch("authenticate");
   },
   data() {
@@ -83,9 +84,6 @@ export default {
           (v && v.length >= 5) || "Password must be greater then 5 characters"
       ]
     };
-  },
-  mounted() {
-    this.getkeeps(), this.$store.dispatch("authenticate");
   },
   methods: {
     register() {
