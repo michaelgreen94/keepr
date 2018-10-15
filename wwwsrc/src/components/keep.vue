@@ -44,7 +44,6 @@
     <v-layout row justify-center>
     <v-dialog v-model="openkeep" absolute max-width="45rem" transition="scale-transition">
       <v-card>
-        <div class="viewkeep">
           <div class="viewcard">
             <img :src="activekeeps.img" alt="" class="viewcardimage">
             <div class="viewcardtext">
@@ -69,7 +68,6 @@
               <i class="delete far fa-trash-alt" v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"></i>
             </div>
           </div>
-        </div>
       </v-card>
     </v-dialog>
     </v-layout>
@@ -186,52 +184,29 @@ export default {
 
 .viewcard {
   width: 100%;
-  margin: 0.5rem;
-  /* margin-bottom: 0.5rem;
-  position: relative;
-  cursor: pointer;
-  margin-left: auto;
-  margin-right: auto; */
 }
 
 .viewcardimage {
-  display: block;
-  width: 100%;
-  height: 100%;
+  width: 30rem;
+  height: 30rem;
+  object-fit: cover;
 }
 
 .viewccardtext {
   width: 100%;
-  /* position: absolute;
-  font-size: 12px;
-  bottom: 0;
-  left: 1rem;
-  color: white;
-  opacity: 0; */
   background-color: white;
-}
-
-.card:hover .cardtext {
-  opacity: 1;
-}
-
-.viewkeep {
-  width: 100%;
 }
 
 .viewkeepicons {
   width: 100%;
-  /* height: 0;
-  position: absolute;
-  top: 100%;
-  z-index: 3;
-  overflow: hidden;
-  transition: height 0.2s;
-  background-color: #353438;
-  color: white; */
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  -bottom: 1rem;
+}
+
+.card:hover .cardtext {
+  opacity: 1;
 }
 
 .delete:hover {
