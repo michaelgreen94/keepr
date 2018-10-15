@@ -113,10 +113,10 @@ export default new Vuex.Store({
           dispatch('getkeeps')
         })
     },
-    getvaults({ commit, dispatch }) { },
-    addvault({ commit, dispatch }) { },
-    deletevault({ commit, dispatch }) { },
-    updatevault({ commit, dispatch }) { },
-    getvaultkeeps({ commit, dispatch }) { }
+    // getvaults({ commit, dispatch }) { },
+    // addvault({ commit, dispatch }) { },
+    // deletevault({ commit, dispatch }) { },
+    // updatevault({ commit, dispatch }) { },
+    // getvaultkeeps({ commit, dispatch }) { }
   }
 })

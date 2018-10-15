@@ -42,18 +42,18 @@
           <div class="keepicons">
             <i @click="sharekeep(activekeep)" class="share far fa-share-square">: {{activekeep.shares}}</i>
             <i class="view far fa-eye">: {{activekeep.views}}</i>
-            <!-- needs to be a v-menu with a list of vaults -->
             <v-menu>
               <v-btn slot="activator">Add to Vault</v-btn>
               <v-list>
                 <v-list-tile @click="addtovault(activekeep.id, vault.id)" v-for="vault in vaults" :key="vault.id"></v-list-tile>
               </v-list>
             </v-menu>
-            <!-- <i @click="addtovault(activekeep)" class="korvue fab fa-korvue">: {{activekeep.keeps}}</i> -->
+            <i @click="addtovault(activekeep)" class="korvue fab fa-korvue">: {{activekeep.keeps}}</i>
             <v-btn @click="editkeep = !editkeep">edit</v-btn>
             <i class="delete far fa-trash-alt" v-if="user.active && activekeep.isPrivate == true" @click="deletekeep(activekeep.id)"></i>
           </div>
         </div>
+      </div>
     </v-dialog>
   </div>
 </template>
@@ -83,9 +83,11 @@ export default {
       this.$store.dispatch("updatekeep", keep);
     },
     viewkeep(keep) {
+      debugger;
       keep.views++;
-      id = keep.id;
-      this.$store.dispatch("setactivekeep", id);
+      // saveid = keep.id;
+      this.$store.dispatch("setactivekeep", keep.id);
+      debugger;
       this.$store.dispatch("updatekeep", keep);
     },
     addtovault(keepid, vaultid) {

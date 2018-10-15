@@ -60,12 +60,12 @@ export default {
       this.$store.dispatch("addkeep", this.create);
     }
   },
-  // mounted() {
-  //   //blocks users not logged in
-  //   if (!this.$store.state.user.id) {
-  //     this.$router.push({ name: "login" });
-  //   }
-  // },
+  mounted() {
+    //blocks users not logged in
+    if (!this.$store.state.user.id) {
+      this.$router.push({ name: "login" });
+    }
+  },
   computed: {
     filteredkeeps: function() {
       return this.$store.state.keeps.filter(keep => {
