@@ -4,43 +4,55 @@
       <v-toolbar-title>Keepr</v-toolbar-title>
       <v-spacer></v-spacer>
         <v-text-field v-if="search" flat label="Search" v-model="searched" solo-inverted></v-text-field>
-      <v-btn icon>
-        <v-icon @click="search = !search">search</v-icon>
+      <v-btn icon @click="search = !search">
+        <v-icon>search</v-icon>
       </v-btn>
       <v-toolbar-items>
         <v-btn class="white--text" @click="showForms = !showForms" flat>Login/Register</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-      <v-dialog v-model="showForms" scrollable width="45rem" transition="scale-transition">
+    <v-layout row justify-center>
+      <v-dialog v-model="showForms" max-width="45rem" transition="scale-transition">
             <v-card dark flat v-if="loginForm">
-              <form ref="form">
-                <v-text-field v-model="creds.email" @submit.prevent="loginUser" :rules="emailRules" label="E-mail"
+              <v-card-title>
+                <span class="headline">Login</span>
+              </v-card-title>
+              <v-container>
+              <form ref="form" @submit.prevent="loginUser" >
+                <v-text-field v-model="creds.email" :rules="emailRules" label="E-mail"
                   required></v-text-field>
                 <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
-                <v-btn :disabled="!valid" type="submit" @click="loginUser">Login</v-btn>
-                <v-btn type="reset">Reset</v-btn>
+                <v-btn @click="loginUser">Login</v-btn>
+                <v-btn @click="clear">Clear</v-btn>
                 <v-layout justify-center>
-                  <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
-                  <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>
+                  <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Register</p>
+                  <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Login</p>
                 </v-layout>
               </form>
+              </v-container>
             </v-card>
             <v-card dark flat v-else>
-              <form ref="form">
+               <v-card-title>
+                <span class="headline">Register</span>
+              </v-card-title>
+              <v-container>
+              <form @submit.prevent="register" >
                 <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
                 <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
                 <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password"
                   required></v-text-field>
-                <v-btn :disabled="!valid" type="submit" @click="register">Register</v-btn>
-                <v-btn type="reset">Reset</v-btn>
+                <v-btn @click="register">Register</v-btn>
+                <v-btn @click="clear">Clear</v-btn>
                 <v-layout justify-center>
-                  <p v-if="loginForm">No account <strong @click="loginForm = !loginForm">click</strong> to Register</p>
-                  <p v-else>Already have an account <strong @click="loginForm = !loginForm">click</strong> to Login</p>
+                  <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Register</p>
+                  <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Login</p>
                 </v-layout>
               </form>
+              </v-container>
             </v-card>
       </v-dialog>
+    </v-layout>
       <keep v-bind:filteredkeeps="filteredkeeps"/>
   </div>
 </template>
@@ -93,7 +105,11 @@ export default {
       this.$store.dispatch("login", this.creds);
     },
     clear() {
-      this.$refs.form.reset();
+      this.creds.email = "";
+      this.creds.password = "";
+      this.newUser.email = "";
+      this.newUser.password = "";
+      this.newUser.username = "";
     },
     getkeeps() {
       this.$store.dispatch("getkeeps");
@@ -121,5 +137,9 @@ export default {
   margin: 0 auto;
   font-size: 0;
   text-align: center;
+}
+
+.darktext {
+  color: black;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-<!-- keeps -->
+  <!-- keeps -->
   <div class="keep">
-    <div class="card" @click="viewkeep(keep)" v-for="keep in filteredkeeps" :key="keep.id">
+    <div v-if="user" class="card" @click="viewkeep(keep)" v-for="keep in filteredkeeps" :key="keep.id">
       <img @click="openkeep = true" :src="keep.img" alt="" class="cardimage">
       <div class="cardtext">
         <h1>{{keep.name}}</h1>
@@ -10,60 +10,69 @@
       <div class="keepicons">
         <i @click="sharekeep(keep)" class="share far fa-share-square">: {{keep.shares}}</i>
         <i class="view far fa-eye">: {{keep.views}}</i>
-        <!-- needs to be a v-menu with a list of vaults -->
         <i @click="addtovault(keep)" class="korvue fab fa-korvue">: {{keep.keeps}}</i>
-        <v-btn v-if="openkeep == true" @click="editkeep = !editkeep">edit</v-btn>
+        <v-btn v-if="openkeep == true && user.active" @click="editkeep = !editkeep">edit</v-btn>
         <i class="delete far fa-trash-alt" v-if="user.active && keep.isPrivate == true" @click="deletekeep(keep.id)"></i>
       </div>
     </div>
+
     <!-- editkeep modal -->
-    <v-dialog v-model="editkeep" absolute width="45rem" transition="scale-transition">
+    <v-layout row justify-center>
+    <v-dialog v-model="editkeep" absolute max-width="45rem" transition="scale-transition">
       <v-card dark flat>
-        <form ref="form">
-          <v-text-field v-model="create.name" label="Name" required></v-text-field>
-          <v-text-field v-model="create.description" label="Description" required></v-text-field>
-          <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-          <div v-if="activekeeps.isPrivate == true">
-          <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
-          <v-btn v-else @click="create.isprivate = false">Private</v-btn>
-          </div>
-          <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
-          <v-btn type="reset">Reset</v-btn>
-        </form>
+        <v-card-title>
+           <span class="headline">Edit keep</span>
+        </v-card-title>
+        <v-container>
+          <form ref="form" @submit.prevent="updatekeep">
+            <v-text-field v-model="create.name" label="Name" required></v-text-field>
+            <v-text-field v-model="create.description" label="Description" required></v-text-field>
+            <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
+            <div v-if="activekeeps.isPrivate == true">
+              <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+              <v-btn v-else @click="create.isprivate = false">Private</v-btn>
+            </div>
+            <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
+            <v-btn type="reset">Reset</v-btn>
+          </form>
+        </v-container>
       </v-card>
     </v-dialog>
+    </v-layout>
+
     <!-- viewkeep modal -->
-    <!-- <v-dialog v-model="openkeep" absolute width="45"></v-dialog> -->
-    <v-dialog v-model="openkeep" absolute width="50rem" transition="scale-transition">
+    <v-layout row justify-center>
+    <v-dialog v-model="openkeep" absolute max-width="45rem" transition="scale-transition">
       <v-card>
-      <div class="viewkeep">
-        <div class="viewcard">
-          <img :src="activekeeps.img" alt="" class="viewcardimage">
-          <div class="viewcardtext">
-            <h1>{{activekeeps.name}}</h1>
-            <p>{{activekeeps.description}}</p>
-          </div>
-          <div class="viewkeepicons">
-            <i @click="sharekeep(activekeeps)" class="share far fa-share-square">: {{activekeeps.shares}}</i>
-            <i class="view far fa-eye">: {{activekeeps.views}}</i>
-            <div class="text-xs-center">
-            <v-menu v-if="user.active">
-              <v-btn slot="activator">Add to Vault</v-btn>
-              <v-list>
-                <v-list-tile v-for="vault in vaults" :key="vault.id" @click="addtovault(activekeeps, vault.id)">
-                <v-list-tile-title>{{vault.name}}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
+        <div class="viewkeep">
+          <div class="viewcard">
+            <img :src="activekeeps.img" alt="" class="viewcardimage">
+            <div class="viewcardtext">
+              <h1>{{activekeeps.name}}</h1>
+              <p>{{activekeeps.description}}</p>
             </div>
-            <i @click="addtovault(activekeeps, vault.id)" class="korvue fab fa-korvue">: {{activekeeps.keeps}}</i>
-            <v-btn @click="editkeep = !editkeep">edit</v-btn>
-            <i class="delete far fa-trash-alt" v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"></i>
+            <div class="viewkeepicons">
+              <i @click="sharekeep(activekeeps)" class="share far fa-share-square">: {{activekeeps.shares}}</i>
+              <i class="view far fa-eye">: {{activekeeps.views}}</i>
+              <div v-if="user.active" class="text-xs-center">
+                <v-menu v-if="user.active">
+                  <v-btn slot="activator">Add to Vault</v-btn>
+                  <v-list>
+                    <v-list-tile v-for="vault in vaults" :key="vault.id" @click="addtovault(activekeeps, vault.id)">
+                      <v-list-tile-title>{{vault.name}}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+              </div>
+              <i @click="addtovault(activekeeps, vault.id)" class="korvue fab fa-korvue">: {{activekeeps.keeps}}</i>
+              <v-btn v-if="user.active" @click="editkeep = !editkeep">edit</v-btn>
+              <i class="delete far fa-trash-alt" v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"></i>
+            </div>
           </div>
         </div>
-      </div>
       </v-card>
     </v-dialog>
+    </v-layout>
   </div>
 </template>
 
@@ -140,15 +149,6 @@ export default {
   margin-right: auto;
 }
 
-.viewcard {
-  width: 100%;
-  /* margin-bottom: 0.5rem;
-  position: relative;
-  cursor: pointer;
-  margin-left: auto;
-  margin-right: auto; */
-}
-
 .card:hover .keepicons {
   height: 5rem;
 }
@@ -159,10 +159,19 @@ export default {
   height: 100%;
 }
 
-.viewcardimage {
-  display: block;
+.keepicons {
   width: 100%;
-  height: 100%;
+  height: 0;
+  position: absolute;
+  top: 100%;
+  z-index: 3;
+  overflow: hidden;
+  transition: height 0.2s;
+  background-color: #353438;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .cardtext {
@@ -173,6 +182,22 @@ export default {
   left: 1rem;
   color: white;
   opacity: 0;
+}
+
+.viewcard {
+  width: 100%;
+  margin: 0.5rem;
+  /* margin-bottom: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto; */
+}
+
+.viewcardimage {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .viewccardtext {
@@ -190,19 +215,8 @@ export default {
   opacity: 1;
 }
 
-.keepicons {
+.viewkeep {
   width: 100%;
-  height: 0;
-  position: absolute;
-  top: 100%;
-  z-index: 3;
-  overflow: hidden;
-  transition: height 0.2s;
-  background-color: #353438;
-  color: white;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
 }
 
 .viewkeepicons {

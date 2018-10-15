@@ -10,8 +10,8 @@
     </v-toolbar>
       <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
             <v-card dark flat>
-              <form ref="form">
-                <v-text-field v-model="create.name" @submit.prevent="createkeep" label="Name" required></v-text-field>
+              <form ref="form" @submit.prevent="createkeep">
+                <v-text-field v-model="create.name" label="Name" required></v-text-field>
                 <v-text-field v-model="create.description" label="Description" required></v-text-field>
                 <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
                 <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
