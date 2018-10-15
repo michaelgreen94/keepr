@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace keepr.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize]
   [ApiController]
   public class VaultkeepController : Controller
   {
@@ -30,13 +31,6 @@ namespace keepr.Controllers
     {
       return _repo.GetByVaultID(id);
     }
-
-
-    // [HttpGet("{id}")]
-    // public Vaultkeep GetVaultKeepById([FromRoute] int id)
-    // {
-    //   return _repo.GetByID(id);
-    // }
 
     [Authorize]
     [HttpPost]

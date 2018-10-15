@@ -14,8 +14,6 @@ namespace keepr.Repositories
       _db = db;
     }
 
-    //CRUD VIA SQL
-
     //GET ALL VaultKeepS
     public IEnumerable<Vaultkeep> GetAll()
     {
@@ -30,12 +28,6 @@ namespace keepr.Repositories
       INNER JOIN keeps k ON k.id = vk.keepId
       WHERE (vaultId = @vaultId)", new { vaultId });
     }
-
-    //GET VaultKeep BY ID
-    // public Vaultkeep GetByID(int id)
-    // {
-    //   return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id }).FirstOrDefault();
-    // }
 
     //CREATE VaultKeep
     public Vaultkeep Create(Vaultkeep vaultkeep)
@@ -57,13 +49,6 @@ namespace keepr.Repositories
       WHERE id = @Id;", vaultkeep);
       return vaultkeep;
     }
-
-    //DELETE Vaultkeep
-    // public Vaultkeep Delete(Vaultkeep vaultkeep)
-    // {
-    //   _db.Execute("DELETE FROM vaultkeeps WHERE id = @Id");
-    //   return vaultkeep;
-    // }
 
     //DELETES A Vaultkeep BY ITS ID
     public bool Delete(int keepId, int vaultId, string userid)

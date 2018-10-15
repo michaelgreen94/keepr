@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace keepr.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize]
   [ApiController]
   public class VaultController : Controller
   {
