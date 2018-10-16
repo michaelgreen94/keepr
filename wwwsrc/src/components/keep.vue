@@ -133,9 +133,13 @@ export default {
 </script>
 <style>
 .keep {
-  column-width: 20rem;
-  column-count: auto;
-  padding: 0.5rem 0.5rem;
+  /* column-width: 20rem; */
+  column-count: 5;
+  -moz-column-count: 5;
+  -webkit-column-count: 5;
+  column-gap: 0.5rem;
+  -moz-column-gap: 0.5rem;
+  -webkit-column-gap: 0.5rem;
 }
 
 .card {
@@ -148,7 +152,7 @@ export default {
 }
 
 .card:hover .keepicons {
-  height: 5rem;
+  height: 4rem;
 }
 
 .cardimage {
@@ -161,8 +165,8 @@ export default {
   width: 100%;
   height: 0;
   position: absolute;
-  top: 100%;
-  z-index: 3;
+  bottom: 0;
+  /* z-index: 3; */
   overflow: hidden;
   transition: height 0.2s;
   background-color: #353438;
@@ -176,7 +180,7 @@ export default {
   width: fit-content;
   position: absolute;
   font-size: 12px;
-  bottom: 0;
+  top: 0;
   left: 1rem;
   color: white;
   opacity: 0;
@@ -203,6 +207,39 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   -bottom: 1rem;
+}
+
+@media (max-width: 1000px) {
+  .keep {
+    column-count: 4;
+    -moz-column-count: 4;
+    -webkit-column-count: 4;
+  }
+}
+
+@media (max-width: 800px) {
+  .keep {
+    column-count: 3;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .keep {
+    column-count: 1;
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+  }
+  .cardtext {
+    opacity: 1;
+    bottom: 0;
+    left: 1rem;
+    font-size: 1rem;
+  }
+  .card {
+    width: 25rem;
+  }
 }
 
 .card:hover .cardtext {
