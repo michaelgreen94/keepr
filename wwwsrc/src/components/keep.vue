@@ -30,10 +30,8 @@
             <v-text-field v-model="create.name" label="Name" required></v-text-field>
             <v-text-field v-model="create.description" label="Description" required></v-text-field>
             <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-            <div v-if="activekeeps.isPrivate == true">
               <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
               <v-btn v-else @click="create.isprivate = false">Private</v-btn>
-            </div>
             <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
             <v-btn type="reset">Reset</v-btn>
           </form>
@@ -60,7 +58,6 @@
               <i @click="sharekeep(activekeeps)" class="share far fa-share-square">: {{activekeeps.shares}}</i>
               <i class="view far fa-eye">: {{activekeeps.views}}</i>
               <i @click="addtovault(activekeeps, vault.id)" class="korvue fab fa-korvue">: {{activekeeps.keeps}}</i>
-
                 <v-menu open-on-hover v-if="user.active">
                   <v-btn color="primary" slot="activator">Add to Vault</v-btn>
                   <v-list>
@@ -69,7 +66,6 @@
                     </v-list-tile>
                   </v-list>
                 </v-menu>
-
               <v-btn v-if="user.active" @click="editkeep = !editkeep">edit</v-btn>
              <v-btn v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"><i class="delete far fa-trash-alt" ></i></v-btn> 
             </div>
@@ -149,7 +145,8 @@ export default {
 }
 
 .card {
-  width: 20rem;
+  border-radius: 2px;
+  overflow: hidden;
   margin-bottom: 0.5rem;
   position: relative;
   cursor: pointer;
@@ -161,10 +158,15 @@ export default {
   height: 4rem;
 }
 
+.card:hover .cardimage {
+  filter: brightness(50%);
+}
+
 .cardimage {
   display: block;
   width: 100%;
   height: 100%;
+  transition: 0.2s;
 }
 
 .keepicons {
@@ -175,7 +177,7 @@ export default {
   /* z-index: 3; */
   overflow: hidden;
   transition: height 0.2s;
-  background-color: #353438;
+  background-color: #3534389d;
   color: white;
   display: flex;
   justify-content: space-evenly;
@@ -203,9 +205,6 @@ export default {
   height: 30rem;
   object-fit: cover;
   object-position: center;
-  padding-top: 0.5rem;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
 }
 
 .viewcardtext {
