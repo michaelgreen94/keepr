@@ -3,7 +3,7 @@
     <v-toolbar class="white--text" color="#353438">
       <v-toolbar-title>Keepr</v-toolbar-title>
       <v-spacer></v-spacer>
-        <v-text-field v-if="search" flat label="Search" v-model="searched" solo-inverted></v-text-field>
+      <v-text-field v-if="search" flat label="Search" v-model="searched" solo-inverted></v-text-field>
       <v-btn icon @click="search = !search">
         <v-icon>search</v-icon>
       </v-btn>
@@ -13,47 +13,52 @@
     </v-toolbar>
     <v-layout row justify-center>
       <v-dialog v-model="showForms" max-width="45rem" transition="scale-transition">
-            <v-card dark flat v-if="loginForm">
-              <v-card-title>
-                <span class="headline">Login</span>
-              </v-card-title>
-              <v-container>
-              <form ref="form" @submit.prevent="loginUser" >
-                <v-text-field v-model="creds.email" :rules="emailRules" label="E-mail"
-                  required></v-text-field>
-                <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password"
-                  required></v-text-field>
-                <v-btn @click="loginUser">Login</v-btn>
-                <v-btn @click="clear">Clear</v-btn>
-                <v-layout justify-center>
-                  <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Register</p>
-                  <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Login</p>
-                </v-layout>
-              </form>
-              </v-container>
-            </v-card>
-            <v-card dark flat v-else>
-               <v-card-title>
-                <span class="headline">Register</span>
-              </v-card-title>
-              <v-container>
-              <form @submit.prevent="register" >
-                <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
-                <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
-                <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password"
-                  required></v-text-field>
-                <v-btn @click="register">Register</v-btn>
-                <v-btn @click="clear">Clear</v-btn>
-                <v-layout justify-center>
-                  <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Register</p>
-                  <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong> to Login</p>
-                </v-layout>
-              </form>
-              </v-container>
-            </v-card>
+        <v-card dark flat v-if="loginForm">
+          <v-toolbar class="white--text" color="#353438">
+            <v-toolbar-title>Login</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn flat @click="showForms = !showForms"><i class="fas fa-times fa-2x vclose"></i></v-btn>
+          </v-toolbar>
+          <v-container>
+            <form ref="form" @submit.prevent="loginUser">
+              <v-text-field v-model="creds.email" :rules="emailRules" label="E-mail" required></v-text-field>
+              <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password" required></v-text-field>
+              <v-btn @click="loginUser" type="submit">Login</v-btn>
+              <v-btn @click="clear">Clear</v-btn>
+              <v-layout justify-center>
+                <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong>
+                  to Register</p>
+                <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong>
+                  to Login</p>
+              </v-layout>
+            </form>
+          </v-container>
+        </v-card>
+        <v-card dark flat v-else>
+          <v-toolbar class="white--text" color="#353438">
+            <v-toolbar-title>Register</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn flat @click="showForms = !showForms"><i class="fas fa-times fa-2x vclose"></i></v-btn>
+          </v-toolbar>
+          <v-container>
+            <form @submit.prevent="register">
+              <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
+              <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
+              <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password" required></v-text-field>
+              <v-btn @click="register" type="submit">Register</v-btn>
+              <v-btn @click="clear">Clear</v-btn>
+              <v-layout justify-center>
+                <p v-if="loginForm">No account <strong class="darktext" @click="loginForm = !loginForm">click</strong>
+                  to Register</p>
+                <p v-else>Already have an account <strong class="darktext" @click="loginForm = !loginForm">click</strong>
+                  to Login</p>
+              </v-layout>
+            </form>
+          </v-container>
+        </v-card>
       </v-dialog>
     </v-layout>
-      <keep v-bind:filteredkeeps="filteredkeeps"/>
+    <keep v-bind:filteredkeeps="filteredkeeps" />
   </div>
 </template>
 

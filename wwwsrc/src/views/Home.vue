@@ -8,28 +8,37 @@
         <v-icon @click="search = !search">search</v-icon>
       </v-btn>
     </v-toolbar>
-      <v-dialog v-model="addkeep" absolute scrollable width="45rem" transition="scale-transition">
-            <v-card dark flat>
-              <form ref="form" @submit.prevent="createkeep">
-                <v-text-field v-model="create.name" label="Name" required></v-text-field>
-                <v-text-field v-model="create.description" label="Description" required></v-text-field>
-                <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-                <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
-                <v-btn v-else @click="create.isprivate = false">Private</v-btn>
-                <v-btn type="submit" @click="createkeep">Create</v-btn>
-                <v-btn type="reset">Reset</v-btn>
-              </form>
-            </v-card>
+    <v-layout row justify-center>
+      <v-dialog v-model="addkeep" absolute max-width="45rem" transition="scale-transition">
+        <v-card dark flat>
+          <v-toolbar class="white--text" color="#353438">
+            <v-toolbar-title>Add Keep</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn flat @click="addkeep = !addkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
+          </v-toolbar>
+          <v-container>
+          <form ref="form" @submit.prevent="createkeep">
+            <v-text-field v-model="create.name" label="Name" required></v-text-field>
+            <v-text-field v-model="create.description" label="Description" required></v-text-field>
+            <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
+            <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+            <v-btn v-else @click="create.isprivate = false">Private</v-btn>
+            <v-btn type="submit" @click="createkeep">Create</v-btn>
+            <v-btn @click="clear">Clear</v-btn>
+          </form>
+          </v-container>
+        </v-card>
       </v-dialog>
-      <keep v-bind:filteredkeeps="filteredkeeps" />
-      <v-speed-dial fixed bottom left right>
-        <v-btn slot="activator" color="darken-2" dark fab>
-          <v-icon>account_circle</v-icon>
-        </v-btn>
-        <v-btn dark @click="logout">Logout</v-btn>
-        <dashboard/>
-        <v-btn @click="addkeep = !addkeep" dark>Add Keep</v-btn>
-      </v-speed-dial>
+    </v-layout>
+    <keep v-bind:filteredkeeps="filteredkeeps" />
+    <v-speed-dial fixed bottom left right>
+      <v-btn slot="activator" color="darken-2" dark fab>
+        <v-icon>account_circle</v-icon>
+      </v-btn>
+      <dashboard />
+      <v-btn @click="addkeep = !addkeep" dark>Add Keep</v-btn>
+      <v-btn  dark @click="logout">Logout</v-btn>
+    </v-speed-dial>
   </div>
 </template>
 
@@ -58,6 +67,12 @@ export default {
     },
     createkeep() {
       this.$store.dispatch("addkeep", this.create);
+    },
+    clear() {
+      this.create.name = "";
+      this.create.description = "";
+      this.create.img = "";
+      this.create.isprivate = false;
     }
   },
   mounted() {
