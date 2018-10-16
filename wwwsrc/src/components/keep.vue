@@ -18,49 +18,39 @@
 
     <!-- editkeep modal -->
     <v-layout row justify-center>
-      <v-dialog v-model="editkeep" absolute max-width="45rem" transition="scale-transition">
-        <v-card dark flat>
-          <v-toolbar dark>
-            <v-toolbar-title>Edit Keep</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn flat @click="editkeep = !editkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
-          </v-toolbar>
-          <v-container>
-            <form ref="form" @submit.prevent="updatekeep">
-              <v-text-field v-model="create.name" label="Name" required></v-text-field>
-              <v-text-field v-model="create.description" label="Description" required></v-text-field>
-              <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-              <div v-if="activekeeps.isPrivate == true">
-                <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
-                <v-btn v-else @click="create.isprivate = false">Private</v-btn>
-              </div>
-              <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
-              <v-btn type="reset">Reset</v-btn>
-            </form>
-          </v-container>
-        </v-card>
-      </v-dialog>
+    <v-dialog v-model="editkeep" absolute max-width="45rem" transition="scale-transition">
+      <v-card dark flat>
+       <v-toolbar dark>
+        <v-toolbar-title>Edit Keep</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn flat @click="editkeep = !editkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
+      </v-toolbar>
+        <v-container>
+          <form ref="form" @submit.prevent="updatekeep">
+            <v-text-field v-model="create.name" label="Name" required></v-text-field>
+            <v-text-field v-model="create.description" label="Description" required></v-text-field>
+            <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
+            <div v-if="activekeeps.isPrivate == true">
+              <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
+              <v-btn v-else @click="create.isprivate = false">Private</v-btn>
+            </div>
+            <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
+            <v-btn type="reset">Reset</v-btn>
+          </form>
+        </v-container>
+      </v-card>
+    </v-dialog>
     </v-layout>
 
     <!-- viewkeep modal -->
     <v-layout row justify-center>
-      <v-dialog v-model="openkeep" absolute max-width="45rem" transition="scale-transition">
-        <v-toolbar dark>
-          <v-toolbar-title>{{activekeeps.name}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn flat @click="openkeep = !openkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
-          <v-layout>
-          <v-menu bottom left v-if="user.active">
-            <v-btn color="primary" slot="activator">Add to Vault</v-btn>
-            <v-list>
-              <v-list-tile v-for="vault in vaults" :key="vault.id" @click="addtovault(activekeeps, vault.id)">
-                <v-list-tile-title>{{vault.name}}</v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-          </v-layout>
-        </v-toolbar>
-        <v-card dark>
+    <v-dialog v-model="openkeep" absolute max-width="45rem" transition="scale-transition">
+      <v-toolbar dark>
+        <v-toolbar-title>{{activekeeps.name}}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn flat @click="openkeep = !openkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
+      </v-toolbar>
+      <v-card dark>
           <div class="viewcard">
             <img :src="activekeeps.img" alt="" class="viewcardimage">
             <div class="viewcardtext">
@@ -70,12 +60,22 @@
               <i @click="sharekeep(activekeeps)" class="share far fa-share-square">: {{activekeeps.shares}}</i>
               <i class="view far fa-eye">: {{activekeeps.views}}</i>
               <i @click="addtovault(activekeeps, vault.id)" class="korvue fab fa-korvue">: {{activekeeps.keeps}}</i>
+
+                <v-menu open-on-hover v-if="user.active">
+                  <v-btn color="primary" slot="activator">Add to Vault</v-btn>
+                  <v-list>
+                    <v-list-tile v-for="vault in vaults" :key="vault.id" @click="addtovault(activekeeps, vault.id)">
+                      <v-list-tile-title>{{vault.name}}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+
               <v-btn v-if="user.active" @click="editkeep = !editkeep">edit</v-btn>
-              <v-btn v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"><i class="delete far fa-trash-alt"></i></v-btn>
+             <v-btn v-if="user.active && activekeeps.isPrivate == true" @click="deletekeep(activekeeps.id)"><i class="delete far fa-trash-alt" ></i></v-btn> 
             </div>
           </div>
-        </v-card>
-      </v-dialog>
+      </v-card>
+    </v-dialog>
     </v-layout>
   </div>
 </template>
@@ -259,12 +259,10 @@ export default {
     -moz-column-count: 1;
     -webkit-column-count: 1;
   }
-
   .cardtext {
     opacity: 1;
     font-size: 1rem;
   }
-
   .card {
     width: 25rem;
   }
