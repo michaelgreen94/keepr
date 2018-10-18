@@ -2,7 +2,7 @@
   <!-- keeps -->
   <div class="keep">
     <div v-if="user" class="card" @click="viewkeep(keep)" v-for="keep in filteredkeeps" :key="keep.id">
-      <img @click="openkeep = true" :src="keep.img" alt="" class="cardimage">
+      <img :src="keep.img" alt="" class="cardimage">
       <div class="cardtext">
         <h1>{{keep.name}}</h1>
         <p>{{keep.description}}</p>
@@ -26,12 +26,12 @@
         <v-btn flat @click="editkeep = !editkeep"><i class="fas fa-times fa-2x vclose"></i></v-btn>
       </v-toolbar>
         <v-container>
-          <form ref="form" @submit.prevent="updatekeep">
-            <v-text-field v-model="create.name" label="Name" required></v-text-field>
-            <v-text-field v-model="create.description" label="Description" required></v-text-field>
-            <v-text-field v-model="create.img" label="Img-URL"></v-text-field>
-              <v-btn v-if="create.isprivate == false" @click="create.isprivate = true">Public</v-btn>
-              <v-btn v-else @click="create.isprivate = false">Private</v-btn>
+          <form ref="form" @submit.prevent>
+            <v-text-field v-model="activekeeps.name" label="Name" required></v-text-field>
+            <v-text-field v-model="activekeeps.description" label="Description" required></v-text-field>
+            <v-text-field v-model="activekeeps.img" label="Img-URL"></v-text-field>
+              <v-btn v-if="activekeeps.isPrivate == false" @click="activekeeps.isPrivate = true">Public</v-btn>
+              <v-btn v-else @click="activekeeps.isPrivate = false">Private</v-btn>
             <v-btn type="submit" @click="updatekeep(activekeeps)">Submit</v-btn>
             <v-btn type="reset">Reset</v-btn>
           </form>
@@ -102,7 +102,7 @@ export default {
     },
     viewkeep(keep) {
       keep.views++;
-      // saveid = keep.id;
+      this.openkeep = true;
       this.$store.dispatch("getsinglekeep", keep.id);
       this.$store.dispatch("updatekeep", keep);
     },
@@ -111,10 +111,9 @@ export default {
       let payload = { keepid: keep.id, vaultid: vaultid, keep };
       this.$store.dispatch("addtovault", payload);
     },
-    updatekeep(activekeep) {
-      // payload = {id: keepid, editedkeep = this.create}
-      this.create.id = activekeep.id;
-      this.$store.dispatch("updatekeep", this.create);
+    updatekeep(activekeeps) {
+      this.$store.dispatch("updatekeep", this.activekeeps);
+      this.editkeep = false;
     }
   },
   computed: {
@@ -142,24 +141,17 @@ export default {
   column-gap: 0.5rem;
   -moz-column-gap: 0.5rem;
   -webkit-column-gap: 0.5rem;
+  padding-bottom: 10rem;
 }
 
 .card {
   border-radius: 2px;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin-bottom: 0.5rem;
   position: relative;
   cursor: pointer;
   margin-left: auto;
   margin-right: auto;
-}
-
-.card:hover .keepicons {
-  height: 4rem;
-}
-
-.card:hover .cardimage {
-  filter: brightness(50%);
 }
 
 .cardimage {
@@ -222,6 +214,14 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   background-color: #212121;
+}
+
+.card:hover .keepicons {
+  height: 4rem;
+}
+
+.card:hover .cardimage {
+  filter: brightness(50%);
 }
 
 @media (max-width: 1300px) {

@@ -11,7 +11,7 @@
     <!-- edit vault modal -->
     <v-dialog v-model="vaultmodal" absolute scrollable width="45rem" transition="scale-transition">
       <v-card dark flat>
-        <form ref="form" @submit.prevent="editvault">
+        <form ref="form" @submit.prevent>
           <v-text-field v-model="activevault.name" label="Name" required></v-text-field>
           <v-text-field v-model="activevault.description" label="Description" required></v-text-field>
           <v-btn type="submit" @click="editvault(activevault.id)">edit</v-btn>

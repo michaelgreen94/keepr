@@ -20,7 +20,7 @@
             <v-btn flat @click="showForms = !showForms"><i class="fas fa-times fa-2x vclose"></i></v-btn>
           </v-toolbar>
           <v-container>
-            <form ref="form" @submit.prevent="loginUser">
+            <form ref="form" @submit.prevent>
               <v-text-field v-model="creds.email" :rules="emailRules" label="E-mail" required></v-text-field>
               <v-text-field v-model="creds.password" type="password" :rules="passwordRules" label="Password" required></v-text-field>
               <v-btn @click="loginUser" type="submit">Login</v-btn>
@@ -41,7 +41,7 @@
             <v-btn flat @click="showForms = !showForms"><i class="fas fa-times fa-2x vclose"></i></v-btn>
           </v-toolbar>
           <v-container>
-            <form @submit.prevent="register">
+            <form @submit.prevent>
               <v-text-field v-model="newUser.username" :rules="usernameRules" label="Username" required></v-text-field>
               <v-text-field v-model="newUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
               <v-text-field v-model="newUser.password" type="password" :rules="passwordRules" label="Password" required></v-text-field>
